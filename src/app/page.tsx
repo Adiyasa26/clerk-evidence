@@ -3,10 +3,13 @@ import Link from "next/link";
 
 import { CreatePost } from "@/app/_components/create-post";
 import { api } from "@/trpc/server";
+import { auth } from "@clerk/nextjs";
 
 export default async function Home() {
   noStore();
   const hello = await api.post.hello.query({ text: "from tRPC" });
+
+  const authC = auth();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
@@ -43,6 +46,8 @@ export default async function Home() {
             {hello ? hello.greeting : "Loading tRPC query..."}
           </p>
         </div>
+
+        <p>{JSON.stringify(authC)}</p>
 
         <CrudShowcase />
       </div>
